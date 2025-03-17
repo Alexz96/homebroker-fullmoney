@@ -15,7 +15,7 @@ import (
 func main() {
 	ordersIn := make(chan *entity.Order)
 	ordersOut := make(chan *entity.Order)
-	wg := sync.WaitGroup{}
+	wg := &sync.WaitGroup{}
 	defer wg.Wait()
 
 	kafkaMsgChan := make(chan *ckafka.Message)
@@ -32,7 +32,7 @@ func main() {
 
 	producer := kafka.NewKafkaProducer(producerConfig)
 
-	consumer := kafka.NewConsumer(&consumerConfig, []string{"orders"})
+	consumer := kafka.NewConsumer(consumerConfig, []string{"orders"})
 	go consumer.Consume(kafkaMsgChan)
 
 	book := entity.NewBook(ordersIn, ordersOut, wg)

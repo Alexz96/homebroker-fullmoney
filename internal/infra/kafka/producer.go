@@ -9,14 +9,11 @@ type Producer struct {
 }
 
 func NewKafkaProducer(configMap *kafka.ConfigMap) *Producer {
-	return &Producer{
-		ConfigMap: configMap,
-	}
+	return &Producer{ConfigMap: configMap}
 }
 
-func (p *Producer) Publish(msg interface{}, key []byte, topic string) {
+func (p *Producer) Publish(msg interface{}, key []byte, topic string) error {
 	producer, err := kafka.NewProducer(p.ConfigMap)
-
 	if err != nil {
 		return err
 	}
@@ -34,6 +31,5 @@ func (p *Producer) Publish(msg interface{}, key []byte, topic string) {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
